@@ -24,8 +24,6 @@ const handlers = [
     ]
 
 function brokerAction (action, image, data){
-    console.log("Broker Action Buffer")
-    console.log(image)
     const fileType = ft.getFileType(image)
     const handle = handlers.find(x => { return action == x.handle }).function
     const func = handle.find(x => { return fileType.ext == x.type }).func

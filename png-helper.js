@@ -10,6 +10,7 @@ const knownTypes =
         { type: 'text', chunkName: 'tEXt' },
         { type: 'internationaltext', chunkName: 'iTXt' },
         { type: 'compressedtext', chunkName: 'zTXt' },
+        { type: 'exif', chunkName: 'eXIf' },
         { type: 'canva', chunkName: 'cnVA' },
         { type: 'cropper', chunkName: 'crPr' }
     ];
@@ -27,11 +28,12 @@ function getMeta(image, types){
 
     typesData = []
     chunks.forEach(x => {      
-        const namedType = knownTypes.find(y => { return y.chunkName == x.name }).type
-        typesData.push({
-            type: namedType,
-            data: x.data
-        })
+        const namedType = knownTypes.find(y => { return y.chunkName == x.name })
+        if (namedType != null)
+            typesData.push({
+                type: namedType.type,
+                data: x.data
+            })
     }); 
 
     return typesData

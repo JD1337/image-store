@@ -1,17 +1,25 @@
 const fs = require('fs')
 
-const broker = require('./filetype-broker').brokerAction
+const ftbroker = require('./filetype-broker').brokerAction
+const databroker = require('./datatype-broker').brokerAction
 
-const canva = require('./canva-helper')
-const text = require('./text-helper')
-
-
-const buffer = fs.readFileSync('./test/PNG_EXIF.png')
+const buffer = fs.readFileSync('./test/sampleWithExifData.png')
 
 const designid = '1234567890'
+const encodeddata = databroker('encode', 'canva', designid)
+const newImage = ftbroker('insertmeta', buffer, [encodeddata])
+const newMeta = ftbroker('getmeta', newImage.data)
 
-const newImage = broker('insertmeta', buffer, [canva.encode(designid)])
 
-const newMeta = broker('getmeta', newImage.data)
-
+decodeAllMeta(newMeta)
 console.log(newMeta)
+
+
+function decodeAllMeta(meta){
+    newMeta.data.forEach(x => {
+        const newData = databroker('decode', x.type, x.data)
+        console.log('newData')
+        console.log(newData)
+        x.data = newData
+    });
+}

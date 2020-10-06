@@ -1,4 +1,5 @@
 const textUtils = require('text-encoding');
+const exifUtils = require('utif');
 
 module.exports.encode = encode;
 module.exports.decode = decode;
@@ -27,6 +28,15 @@ function encode (string, type){
     //        data: encoder.encode([string])
     //    }
     //}
+
+    if (type == 'exif'){
+        return {
+            type: 'exif',
+            data: new textUtils.TextEncoder("utf-8").encode(string)
+        }
+    }
+
+
         
 }
 
@@ -52,4 +62,18 @@ function decode (data, type){
     //        data: encoder.encode([string])
     //    }
     //}
+
+    if (type == 'exif'){
+        ifd = exifUtils.decode(data)
+        console.log(ifd)
+        ifd.forEach(x => {
+            console.log(exifUtils.decodeImage(data, ifd))
+        });
+        
+        return {
+            type: 'exif',
+            data: ifd
+            
+        }
+    }
 }

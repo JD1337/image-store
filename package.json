@@ -10,11 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "exif-component": "^1.0.1",
+    "exifreader": "^3.12.2",
     "file-type": "^15.0.1",
     "file-type-es5": "^6.2.1",
     "png-chunks-encode": "^1.0.0",
     "png-chunks-extract": "^1.0.0",
-    "text-encoding": "^0.7.0"
+    "text-encoding": "^0.7.0",
+    "utif": "^3.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
