@@ -7,7 +7,7 @@ function encode (designid){
     return {
         type: 'canva',
         data: new textUtils.TextEncoder("utf-8").encode(designid)
-      }
+      };
     
 }
 
