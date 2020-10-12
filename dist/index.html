@@ -7,8 +7,14 @@
     <input id="input" type="file" />
     <script>
         document.getElementById('input').addEventListener('change', (event) => {
-            meta = myapp.getMeta(event.target.files[0], 'getMeta'),
-            alert('Meta: ' + meta);
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(event.target.files[0])
+            reader.onloadend = (evt) => {
+                var buffer = evt.target.result
+                console.log(buffer)
+                var meta = myapp.getMeta(buffer);
+                console.log(meta);
+            }   
         });
     </script>
 </body> 

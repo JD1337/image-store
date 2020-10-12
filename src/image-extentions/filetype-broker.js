@@ -1,4 +1,5 @@
 const fileType = require('file-type-es5');
+/*const fileType = require('file-type').fromBuffer;*/
 const png = require('./png/png-helper');
 
 const handlers = [
@@ -38,14 +39,23 @@ const handlers = [
 
 var brokerAction = function (action, image, data){
     const filemeta = fileType(image);
+    if (filemeta === null){
+        throw new Error('Filetype could not be determined');
+    }
     const handle = handlers.find(x => { return action == x.handle; }).function;
-    const func = handle.find(x => { return fileType.ext == x.type; }).func;
+    if (handle === null){
+        throw new Error('Action Not Supported: ' + action);
+    }
+    const brokerfunction = handle.find(x => { return fileType.ext == x.type; });
+    if (brokerfunction === null){
+        throw new Error('Filetype Action Note Supported: ' + fileType.ext + ' ' + action);
+    }
     return {
         extention: filemeta.ext,
         mimeType: filemeta.mime,
-        data: func(image, data)
+        data: brokerfunction.func(image, data)
     };
-}
+};
 
 module.exports.brokerAction = brokerAction;
 
