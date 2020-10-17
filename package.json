@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "babel-polyfill": "^6.26.0",
     "exif-component": "^1.0.1",
     "exifreader": "^3.12.2",

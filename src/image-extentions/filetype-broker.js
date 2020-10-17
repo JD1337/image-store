@@ -1,61 +1,26 @@
 const fileType = require('file-type-es5');
-/*const fileType = require('file-type').fromBuffer;*/
-const png = require('./png/png-helper');
+const png = require('./png/app.js');
 
-const handlers = [
-        {
-            handle:'insertmeta',
-            function:[
-                {
-                    type:'png', func:png.insertMeta
-                }
-            ]
-        },
-        {
-            handle:'upsertmeta',
-            function:[
-                {
-                    type:'png', func:png.upsertMeta
-                }
-            ]
-        },
-        {
-            handle:'getmeta',
-            function:[
-                {
-                    type:'png', func:png.getMeta
-                }
-            ]
-        },
-        {
-            handle:'getminimalimage',
-            function:[
-                {
-                    type:'png', func:png.deleteMeta
-                }
-            ]
-        }
-    ];
+module.exports = switchfunc;
 
-var brokerAction = function (action, image, data){
+function switchfunc(action, image, data){
     const filemeta = fileType(image);
     if (filemeta === null){
-        throw new Error('Filetype could not be determined');
+        throw new Error('Image Filetype could not be determined');
+    }else{
+        console.log(filemeta);
     }
-    const handle = handlers.find(x => { return action == x.handle; }).function;
-    if (handle === null){
-        throw new Error('Action Not Supported: ' + action);
-    }
-    const brokerfunction = handle.find(x => { return fileType.ext == x.type; });
-    if (brokerfunction === null){
-        throw new Error('Filetype Action Note Supported: ' + fileType.ext + ' ' + action);
-    }
-    return {
-        extention: filemeta.ext,
-        mimeType: filemeta.mime,
-        data: brokerfunction.func(image, data)
-    };
-};
+        
+    switch(filemeta.ext) {
+        case 'png':
+            return {
+                extention: filemeta.ext,
+                mimeType: filemeta.mime,
+                data: png(action, image, data)
+            };
+        default:
+            throw new Error('Image Filetype Not Supported: ' + fileType.ext + ' ' + action);
+      }
+}
 
-module.exports.brokerAction = brokerAction;
 

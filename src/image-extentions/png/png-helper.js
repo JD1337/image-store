@@ -1,4 +1,4 @@
-const pngMeta = require('./png-meta')
+const pngMeta = require('./png-meta');
 
 module.exports.getMeta = getMeta;
 module.exports.insertMeta = insertMeta;
@@ -17,71 +17,74 @@ const knownTypes =
 
 function getMeta(image, types){
 
-    const imagechunks = pngMeta.getImageChunks(image)
+    console.log(image);
 
-    console.log(imagechunks)
+    const imagechunks = pngMeta.getImageChunks(image);
 
+    console.log(imagechunks);
+
+    var chunks = [];
     if (types == null)
-        chunks = pngMeta.getMetaChunks(imagechunks)
+        chunks = pngMeta.getMetaChunks(imagechunks);
     else
-        chunks = pngMeta.getMetaChunks(imagechunks, knownTypes.filter( x => types.includes( x.type ).chunkName ))
-
-    typesData = []
+        chunks = pngMeta.getMetaChunks(imagechunks, knownTypes.filter( x => types.includes( x.type ).chunkName ));
+    
+    typesData = [];
     chunks.forEach(x => {      
-        const namedType = knownTypes.find(y => { return y.chunkName == x.name })
+        const namedType = knownTypes.find(y => { return y.chunkName == x.name; });
         if (namedType != null)
             typesData.push({
                 type: namedType.type,
                 data: x.data
-            })
+            });
     }); 
 
-    return typesData
+    return typesData;
 }
 
-function insertMeta(image, imageMeta){
-    const imagechunks = pngMeta.getImageChunks(image)
+function insertMeta(image, [imageMeta]){
+    const imagechunks = pngMeta.getImageChunks(image);
 
-    newChunks = []
+    var newChunks = []
     imageMeta.forEach(x => {      
-        const chunkName = knownTypes.find(y => { return y.type == x.type }).chunkName
+        const chunkName = knownTypes.find(y => { return y.type == x.type; }).chunkName;
+        newChunks.push({
+            name: chunkName,
+            data: x.data
+        });
+    }); 
+
+    splicedChunks = pngMeta.setMetaChunks(imagechunks, newChunks);
+    return pngMeta.encodeImage(splicedChunks);
+
+}
+
+function upsertMeta(image, [imageMeta]){
+    const imagechunks = pngMeta.getImageChunks(image);
+
+    newChunks = [];
+    chunkList = [];
+    imageMeta.forEach(x => {      
+        const chunkName = knownTypes.find(y => { return y.type == x.type; }).chunkName;
         newChunks.push({
             name: chunkName,
             data: x.data
         })
+        chunkList.push(chunkName);
     }); 
 
-    splicedChunks = pngMeta.setMetaChunks(imagechunks, newChunks)
-    return pngMeta.encodeImage(splicedChunks)
+    filteredImageChunks = pngMeta.stripMetaChunks(imagechunks, chunkList);
+    splicedChunks = pngMeta.setMetaChunks(imagechunks, newChunks);
 
-}
-
-function upsertMeta(image, imageMeta){
-    const imagechunks = pngMeta.getImageChunks(image)
-
-    newChunks = []
-    chunkList = []
-    imageMeta.forEach(x => {      
-        const chunkName = knownTypes.find(y => { return y.type == x.type }).chunkName
-        newChunks.push({
-            name: chunkName,
-            data: x.data
-        })
-        chunkList.push(chunkName)
-    }); 
-
-    filteredImageChunks = pngMeta.stripMetaChunks(imagechunks, chunkList)
-    splicedChunks = pngMeta.setMetaChunks(imagechunks, newChunks)
-
-    return pngMeta.encodeImage(splicedChunks)
+    return pngMeta.encodeImage(splicedChunks);
 
 }
 
 function deleteMeta(image, metaList){
-    const imagechunks = pngMeta.getImageChunks(image)
+    const imagechunks = pngMeta.getImageChunks(image);
 
-    filteredImageChunks = pngMeta.stripMetaChunks(imagechunks, metaList)
+    filteredImageChunks = pngMeta.stripMetaChunks(imagechunks, metaList);
 
-    return pngMeta.encodeImage(filteredImageChunks)
+    return pngMeta.encodeImage(filteredImageChunks);
 
 }

@@ -1,64 +1,71 @@
+import 'babel-polyfill';
 
-const ftbroker = require('./image-extentions/filetype-broker').brokerAction;
-const databroker = require('./metadata-extentions/datatype-broker').brokerAction;
+const ftbroker = require('./image-extentions/filetype-broker');
+const databroker = require('./metadata-extentions/datatype-broker');
 
-var getMeta = function(image, types){
+function getMeta(image, types){
 
-    const filteredMeta = ftbroker('getmeta', image, [types]);
+    const filteredMeta = ftbroker('getmeta', image, types).data;
 
-    return decodeMeta(filteredMeta);
+    if (filteredMeta === null){
+        return null;
+    }
+    console.log(filteredMeta);
+    return decodeMeta([filteredMeta]);
     
 }
 
-var insertMeta = function(image, metaArray){
+function insertMeta(image, metaArray){
     const encodedMeta = encodeMeta(metaArray);
 
     return ftbroker('insertmeta', image, [encodedMeta])
 
 }
 
-var replaceMeta = function(image, metaArray){
+function replaceMeta(image, metaArray){
     const newImage = ftbroker('getminimalimage', image);
 
     return addMeta(newImage, metaArray)
 }
 
-var upsertMeta = function(image, metaArray){
+function upsertMeta(image, metaArray){
     const encodedMeta = encodeMeta(metaArray);
 
     return ftbroker('upsertmeta', image, [encodedMeta])
 }
 
-var encodeMeta = function(metaArray){
+function encodeMeta([metaArray]){
 
-    encodedMeta = []
-
-    metaArray.forEach(x => {
-        const encoded = databroker('encode', x.type, x.data);
-        if (encoded != null)
-                encodedMeta.push({
-                type: namedType.type,
-                data: x.data
-            });
-    });
+    var encodedMeta = [];
+    if (metaArray !== null){
+        metaArray.forEach(x => {
+            const encoded = databroker('encode', x.type, x.data);
+            if (encoded != null)
+                    encodedMeta.push({
+                    type: x.type,
+                    data: x.data
+                });
+        });
+    }else{
+        console.log('No Meta exists on image')
+    }
 
     return encodedMeta;
 }
 
-var decodeMeta = function(metaArray){
+function decodeMeta([metaArray]){
 
-    decodedMeta = [];
-
+    var plainMeta = [];
     metaArray.forEach(x => {
         const decoded = databroker('decode', x.type, x.data);
-        if (deccoded != null)
-                decodedMeta.push({
-                type: namedType.type,
-                data: x.data
+        if (decoded != null)
+                plainMeta.push({
+                type: decoded.type,
+                data: decoded.data
             });
     });
 
-    return decodedMeta;
+    return plainMeta;
 }
 
 /* module.exports.getMeta = getMeta;
@@ -76,5 +83,8 @@ module.exports.upsertMeta = upsertMeta;
 }*/
 
 window.myapp = {
-    getMeta: getMeta
-}
+    getMeta: getMeta,
+    insertMeta: insertMeta,
+    replaceMeta: replaceMeta,
+    upsertMeta: upsertMeta
+};

@@ -10,7 +10,7 @@
             var reader = new FileReader();
             reader.readAsArrayBuffer(event.target.files[0])
             reader.onloadend = (evt) => {
-                var buffer = evt.target.result
+                var buffer = new Uint8Array(evt.target.result);
                 console.log(buffer)
                 var meta = myapp.getMeta(buffer);
                 console.log(meta);

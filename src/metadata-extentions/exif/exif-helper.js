@@ -1,21 +1,24 @@
+const exifUtils = require('utif');
 
-function encode (string, type){
-    return {
-        type: 'exif',
-        data: new textUtils.TextEncoder("utf-8").encode(string)
-    }
+module.exports = switchfunc;
+
+function switchfunc(action, data){
+    
+    switch(action) {
+        case 'encode':
+            return encode(data);
+        case 'decode':
+            return decode(data);
+        default:
+            throw new Error('Meta Action Not Supported: ' + action);
+      }
+}
+
+function encode (data){
+    return new exifUtils.encode(data);
  }
 
 
-function decode (data, type){
-    ifd = exifUtils.decode(data)
-    console.log(ifd)
-    ifd.forEach(x => {
-        console.log(exifUtils.decodeImage(data, ifd))
-    });
-    
-    return {
-        type: 'exif',
-        data: ifd
-    }
+function decode (data){
+    return new exifUtils.decode(data);
 }

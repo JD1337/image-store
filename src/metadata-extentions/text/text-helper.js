@@ -1,58 +1,45 @@
 const textUtils = require('text-encoding');
-const exifUtils = require('utif');
 
-module.exports.encode = encode;
-module.exports.decode = decode;
+module.exports = switchfunc;
 
-function encode (string, type){
-    
-    if (type == 'internationalText'){
-        return {
-            type: 'internationalText',
-            data: new textUtils.TextEncoder("utf-8").encode(string)
-        }
-    }
-    
-    if (type == 'text'){
-        const uint8array = new textUtils.TextEncoder(
-            'latin1', { NONSTANDARD_allowLegacyEncoding: true }).encode(string);
-        return {
-            type: 'text',
-            data: uint8array
-        }
-    }
+function encode (dataType, data){
 
-    //if (type == 'compressedtext'){
-    //    return {
-    //        type: 'compressedtext',
-    //        data: encoder.encode([string])
-    //    }
-    //}
+    switch(dataType) {
+        case 'internationalText':
+            return new textUtils.TextEncoder("utf-8").encode(data);
+        case 'text':
+            return new textUtils.TextEncoder('latin1', { NONSTANDARD_allowLegacyEncoding: true }).encode(data);
+        case 'compressedtext':
+            throw new Error('Encode Action Not Completed: ' + dataType);
+        default:
+            throw new Error('Meta Action Not Supported: ' + dataType);
+      }
         
 }
 
-function decode (data, type){
+function decode (dataType, data){
 
-    if (type == 'internationalText'){
-        return {
-            type: 'internationalText',
-            data: new textUtils.TextDecoder("utf-8").decode(data)
-        }
-    }
+    switch(dataType) {
+        case 'internationalText':
+            return new textUtils.TextDecoder("utf-8").decode(data);
+        case 'text':
+            return new textUtils.TextDecoder("latin1").decode(data);
+        case 'compressedtext':
+            throw new Error('Action Not Completed: ' + dataType);
+        default:
+            throw new Error('Meta Action Not Supported: ' + dataType);
+      }
     
-    if (type == 'text'){
-        return {
-            type: 'text',
-            data: new textUtils.TextDecoder("latin1").decode(data)
-        }
-    }
+}
 
-    //if (type == 'compressedtext'){
-    //    return {
-     //       type: 'compressedtext',
-    //        data: encoder.encode([string])
-    //    }
-    //}
-
+function switchfunc(action, dataType, data){
     
+    switch(action) {
+        case 'encode':
+            return encode(dataType, data);
+        case 'decode':
+            return decode(dataType, data);
+        default:
+            throw new Error('Meta Action Not Supported: ' + action);
+      }
 }
