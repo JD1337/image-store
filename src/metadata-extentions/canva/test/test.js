@@ -1,6 +1,6 @@
 const assert = require('chai').use(require('chai-bytes')).assert;
 
-const canva = require('./../exif-helper.js');
+const canva = require('./../app.js');
 
 const testbytes = [31, 32, 33, 34, 35, 36, 37, 38, 39, 30];
 const testdesignid = '1234567890';

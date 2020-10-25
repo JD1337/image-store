@@ -44,7 +44,8 @@ function getMeta(image, types){
 
 function insertMeta(image, [imageMeta]){
     const imagechunks = pngMeta.getImageChunks(image);
-
+    console.log('got image chunks');
+    console.log(imagechunks);
     var newChunks = []
     imageMeta.forEach(x => {      
         const chunkName = knownTypes.find(y => { return y.type == x.type; }).chunkName;
@@ -54,7 +55,9 @@ function insertMeta(image, [imageMeta]){
         });
     }); 
 
-    splicedChunks = pngMeta.setMetaChunks(imagechunks, newChunks);
+    splicedChunks = pngMeta.setMetaChunks(imagechunks, [newChunks]);
+    console.log('spliced chunks');
+    console.log(splicedChunks);
     return pngMeta.encodeImage(splicedChunks);
 
 }
@@ -74,9 +77,9 @@ function upsertMeta(image, [imageMeta]){
     }); 
 
     filteredImageChunks = pngMeta.stripMetaChunks(imagechunks, chunkList);
-    splicedChunks = pngMeta.setMetaChunks(imagechunks, newChunks);
+    splicedChunks = pngMeta.setMetaChunks(imagechunks, [newChunks]);
 
-    return pngMeta.encodeImage(splicedChunks);
+    return pngMeta.encodeImage([splicedChunks]);
 
 }
 

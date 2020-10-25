@@ -6,6 +6,9 @@ function switchfunc(action, image, data){
     
     switch(action) {
         case 'insertmeta':
+            console.log('perform action')
+            console.log(image);
+            console.log([data]);
             return helper.insertMeta(image, data);
         case 'upsertmeta':
             return helper.upsertMeta(image, data);

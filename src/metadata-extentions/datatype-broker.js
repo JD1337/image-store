@@ -1,6 +1,7 @@
-const text = require('./text/text-helper');
-const canva = require('./canva/canva-helper');
-const exif = require('./exif/exif-helper');
+const text = require('./text/app');
+const canva = require('./canva/app');
+const exif = require('./exif/app');
+const cropperjs = require('./cropperjs/app');
 
 module.exports = switchfunc;
 
@@ -10,19 +11,24 @@ function switchfunc(action, dataType, data){
         case 'canva':
             return {
                 type: dataType,
-                data: new canva(action, data)
+                data: canva(action, data)
             };
         case 'text':
-        case 'internationalText':
+        case 'internationaltext':
         case 'compressedtext':
             return {
                 type: dataType,
-                data: new text(action, dataType, data)
+                data: text(action, dataType, data)
             };
         case 'exif':
             return {
                 type: dataType,
-                data: new exif(action, data)
+                data: exif(action, data)
+            };
+        case 'cropper':
+            return {
+                type: dataType,
+                data: cropperjs(action, data)
             };
         default:
             throw new Error('Image Meta Not Supported: ' + dataType);

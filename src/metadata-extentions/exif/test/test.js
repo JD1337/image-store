@@ -1,6 +1,6 @@
 const assert = require('chai').use(require('chai-bytes')).assert;
 
-const exif = require('./../exif-helper.js');
+const exif = require('./../app.js');
 
 const exifbytes = [];
 const exifjson = '';

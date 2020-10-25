@@ -15,39 +15,39 @@ function getMeta(image, types){
     
 }
 
-function insertMeta(image, metaArray){
-    const encodedMeta = encodeMeta(metaArray);
+function insertMeta(image, [metaArray]){
+    const encodedMeta = encodeMeta([metaArray]);
 
     return ftbroker('insertmeta', image, [encodedMeta])
 
 }
 
-function replaceMeta(image, metaArray){
+function replaceMeta(image, [metaArray]){
     const newImage = ftbroker('getminimalimage', image);
 
     return addMeta(newImage, metaArray)
 }
 
-function upsertMeta(image, metaArray){
+function upsertMeta(image, [metaArray]){
     const encodedMeta = encodeMeta(metaArray);
 
     return ftbroker('upsertmeta', image, [encodedMeta])
 }
 
 function encodeMeta([metaArray]){
-
+    console.log(metaArray)
     var encodedMeta = [];
     if (metaArray !== null){
         metaArray.forEach(x => {
             const encoded = databroker('encode', x.type, x.data);
             if (encoded != null)
                     encodedMeta.push({
-                    type: x.type,
-                    data: x.data
+                    type: encoded.type,
+                    data: encoded.data
                 });
         });
     }else{
-        console.log('No Meta exists on image')
+        console.log('No Meta exists to encode')
     }
 
     return encodedMeta;

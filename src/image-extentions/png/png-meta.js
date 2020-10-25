@@ -9,16 +9,30 @@ module.exports.getImageChunks = getImageChunks;
 module.exports.encodeImage = encodeImage;
 module.exports.stripMetaChunks = stripMetaChunks;
 
-function getImageChunks(image){ return decode(image); }
-function encodeImage (chunks){ return encode(chunks); }
+function getImageChunks(image){
+    console.log('Decode Image');
+    console.log(image);
+     return decode(image);
+     }
+
+
+function encodeImage (chunks){ 
+    console.log('Encode Image');
+    console.log(chunks);
+    return encode(chunks);
+ }
 
 function setMetaChunks(imagechunks, [chunks]){
-
+    console.log(chunks);
     splicedchunks = imagechunks;
-    
+    console.log('image')
+    console.log(imagechunks);
+    console.log(splicedchunks);
     chunks.forEach(x => { 
         // Add new chunks before the IEND chunk
         splicedchunks.splice(-1, 0, x);
+        console.log('add new splice')
+        console.log(splicedchunks);
       }
     ); 
 
