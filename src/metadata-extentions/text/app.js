@@ -6,7 +6,7 @@ module.exports = switchfunc;
 function encode (dataType, data){
 
     var uint8array = null;
-
+    //  Note: This is not the standard - the standard should enforce Label: Data format
     switch(dataType) {
         case 'internationaltext':
             uint8array = new textUtils.TextEncoder("utf-8").encode(data);
@@ -15,6 +15,7 @@ function encode (dataType, data){
             uint8array = new textUtils.TextEncoder('latin1', { NONSTANDARD_allowLegacyEncoding: true }).encode(data);
             break;
         //case 'compressedtext':
+        // Standard should be uncompressed label, compressed data
         //    var compressed = deflate(data);
         //    uint8array = new textUtils.TextEncoder('latin1', { NONSTANDARD_allowLegacyEncoding: true }).encode(compressed);
         //    break;

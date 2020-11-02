@@ -1,6 +1,6 @@
-const textUtils = require('text-encoding');
+//const textUtils = require('text-encoding');
 const BSON = require('bson');
-const Buffer = require('buffer/').Buffer;
+//const Buffer = require('buffer/').Buffer;
 
 module.exports = switchfunc;
 
@@ -21,6 +21,7 @@ function encode (data){
     if (typeof data !== 'object'){
         throw new Error('Not Valid Javascript Object');
     }
+    // Should check for correct JS object Type for CropperJS Data
 
     const encoded = new Uint8Array(BSON.serialize(data).buffer);
 
@@ -29,7 +30,7 @@ function encode (data){
 }
 
 function decode (data){
-     
+    // Should check for correct JS object Type for CropperJS Data 
     return BSON.deserialize(data);
 }
 

@@ -24,8 +24,8 @@ function insertMeta(image, [metaArray]){
 
 function replaceMeta(image, [metaArray]){
     const newImage = ftbroker('getminimalimage', image);
-
-    return addMeta(newImage, metaArray)
+    
+    return insertMeta(newImage, [metaArray])
 }
 
 function upsertMeta(image, [metaArray]){
@@ -68,19 +68,6 @@ function decodeMeta([metaArray]){
     return plainMeta;
 }
 
-/* module.exports.getMeta = getMeta;
-module.exports.insertMeta = insertMeta;
-module.exports.replaceMeta = replaceMeta;
-module.exports.upsertMeta = upsertMeta;
-
-*/
-
-/*export{
-    getMeta,
-    insertMeta,
-    replaceMeta,
-    upsertMeta
-}*/
 
 window.myapp = {
     getMeta: getMeta,

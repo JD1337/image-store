@@ -4,16 +4,20 @@
     <script src="./main.js" type="text/javascript"></script>
 </head>
 <body>
-    <input id="input" type="file" />
+    <h1>Get Meta Data</h1>
+    <div>
+    <input id="input" type="file" accept="image/*"/>
+    </div>
+    <pre id="json" >Metadata will display here</pre>
+
     <script>
         document.getElementById('input').addEventListener('change', (event) => {
             var reader = new FileReader();
             reader.readAsArrayBuffer(event.target.files[0])
             reader.onloadend = (evt) => {
                 var buffer = new Uint8Array(evt.target.result);
-                console.log(buffer)
                 var meta = myapp.getMeta(buffer);
-                console.log(meta);
+                document.getElementById("json").textContent = JSON.stringify(meta, undefined, 2);
             }   
         });
     </script>
