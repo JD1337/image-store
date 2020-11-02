@@ -7,10 +7,8 @@ function switchfunc(action, image, data){
     const filemeta = fileType(image);
     if (filemeta === null){
         throw new Error('Image Filetype could not be determined');
-    }else{
-        console.log(filemeta);
     }
-        
+
     switch(filemeta.ext) {
         case 'png':
             return {

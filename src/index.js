@@ -10,7 +10,6 @@ function getMeta(image, types){
     if (filteredMeta === null){
         return null;
     }
-    console.log(filteredMeta);
     return decodeMeta([filteredMeta]);
     
 }
@@ -18,26 +17,25 @@ function getMeta(image, types){
 function insertMeta(image, [metaArray]){
     const encodedMeta = encodeMeta([metaArray]);
 
-    return ftbroker('insertmeta', image, [encodedMeta])
+    return ftbroker('insertmeta', image, [encodedMeta]);
 
 }
 
 function replaceMeta(image, [metaArray]){
     const newImage = ftbroker('getminimalimage', image);
     
-    return insertMeta(newImage, [metaArray])
+    return insertMeta(newImage, [metaArray]);
 }
 
 function upsertMeta(image, [metaArray]){
     const encodedMeta = encodeMeta(metaArray);
 
-    return ftbroker('upsertmeta', image, [encodedMeta])
+    return ftbroker('upsertmeta', image, [encodedMeta]);
 }
 
 function encodeMeta([metaArray]){
-    console.log(metaArray)
     var encodedMeta = [];
-    if (metaArray !== null){
+    if (metaArray !== null && typeof metaArray !== 'undefined'){
         metaArray.forEach(x => {
             const encoded = databroker('encode', x.type, x.data);
             if (encoded != null)
@@ -46,8 +44,6 @@ function encodeMeta([metaArray]){
                     data: encoded.data
                 });
         });
-    }else{
-        console.log('No Meta exists to encode')
     }
 
     return encodedMeta;

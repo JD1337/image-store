@@ -10,13 +10,32 @@
     </div>
     <pre id="json" >Metadata will display here</pre>
 
+    </br>
+    </br>
+    <h1>Strip Meta Data</h1>
+    <input id="input2" type="file" accept="image/*"/>
+    <pre id="array" >Origingal Image</pre>
+    <pre id="newarray" >New Image</pre>
+
     <script>
         document.getElementById('input').addEventListener('change', (event) => {
             var reader = new FileReader();
             reader.readAsArrayBuffer(event.target.files[0])
             reader.onloadend = (evt) => {
                 var buffer = new Uint8Array(evt.target.result);
+                document.getElementById("array").textContent = buffer;
                 var meta = myapp.getMeta(buffer);
+                document.getElementById("json").textContent = JSON.stringify(meta, undefined, 2);
+            }   
+        });
+
+        document.getElementById('input2').addEventListener('change', (event) => {
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(event.target.files[0])
+            reader.onloadend = (evt) => {
+                var buffer = new Uint8Array(evt.target.result);
+                document.getElementById("array").textContent = buffer;
+                var meta = myapp.replaceMeta(buffer, []);
                 document.getElementById("json").textContent = JSON.stringify(meta, undefined, 2);
             }   
         });
