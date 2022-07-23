@@ -21,7 +21,7 @@
     "cropperjs": "^1.5.9",
     "exif-component": "^1.0.1",
     "exifreader": "^3.12.2",
-    "file-type": "^15.0.1",
+    "file-type": "^16.5.4",
     "file-type-es5": "^6.2.1",
     "filereader": "^0.10.3",
     "png-chunks-encode": "^1.0.0",
