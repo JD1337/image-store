@@ -20,7 +20,7 @@
     "chai-bytes": "^0.1.2",
     "cropperjs": "^1.5.9",
     "exif-component": "^1.0.1",
-    "exifreader": "^3.12.2",
+    "exifreader": "^4.6.0",
     "file-type": "^15.0.1",
     "file-type-es5": "^6.2.1",
     "filereader": "^0.10.3",
